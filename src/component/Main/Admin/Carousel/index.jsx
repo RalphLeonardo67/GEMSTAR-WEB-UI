@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { addServices, fetchServices } from '../../../../store/action';
 
-const ServicesUpdate = props => {
+const Carousel = props => {
   const { addServices, fetchServices, services } = props;
 
   const [show, setShow] = useState(false);
@@ -54,35 +54,23 @@ const ServicesUpdate = props => {
             <Modal.Title>Add Photo</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Service Type</Form.Label>
+          <Form.Group controlId="formFileLg" className="mb-3">
               <Form.Control
-                type="text"
-                name="service_type"
-                placeholder="Enter Service Type"
-                value={values.service_type}
-                onChange={handleChange}
-                required
+                type="file"
+                name="file"
+                // value={values.file}
+                onChange={handleFileUpload}
+                multiple
               />
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                name="price"
-                placeholder="0.00"
-                value={values.price}
-                onChange={handleChange}
-              />
-            </Form.Group>
+            
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShow(false)}>
               Close
             </Button>
             <Button variant="primary" type="submit">
-              Save
+              Upload
             </Button>
           </Modal.Footer>
         </Form>
@@ -134,4 +122,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ServicesUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(Carousel);

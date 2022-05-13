@@ -8,7 +8,7 @@ import Carousel from './Carousel';
 
 const tabsList = {
   services: { label: 'Services', link: 'services' },
-  landing_page: { label: 'Landing Page', link: 'landing_page' },
+  // landing_page: { label: 'Landing Page', link: 'landing_page' },
   carousel: { label: 'Carousel', link: 'carousel' }
 };
 const default_active_key = 'services';
