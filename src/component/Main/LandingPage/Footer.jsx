@@ -9,20 +9,13 @@ const FooterPage = () => {
       <Container>
         <Row className="py-5 text-center">
           <Col sm={12} md={4}>
-            <h5 className="text-uppercase text-white mb-4 font-weight-bold">Links</h5>
+            <h5 className="text-uppercase text-white mb-4 font-weight-bold">Link</h5>
             <ul className="list-unstyled">
               <p>
                 <Link
                   className="text-white text-decoration-none"
                   to={`/create`}>
                   Create Project
-                </Link>
-              </p>
-              <p>
-                <Link
-                  className="text-white text-decoration-none"
-                  to={`/profile`}>
-                  Profile
                 </Link>
               </p>
             </ul>
