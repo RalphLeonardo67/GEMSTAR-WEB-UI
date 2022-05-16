@@ -14,9 +14,6 @@ const HomePage = () => {
             src={img1}
             alt="Honda"
           />
-          <Carousel.Caption>
-            <h3>Honda Vtec Cylinder Head</h3>
-          </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
           <img
@@ -24,9 +21,6 @@ const HomePage = () => {
             src={img2}
             alt="Isuzu"
           />
-          <Carousel.Caption>
-            <h3>Isuzu 6he1 Cylinder Heads</h3>
-          </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
           <img
@@ -34,10 +28,6 @@ const HomePage = () => {
             src={img3}
             alt="Kia"
           />
-
-          <Carousel.Caption>
-            <h3>Kia J2 Cylinder Head</h3>
-          </Carousel.Caption>
         </Carousel.Item>
       </Carousel>
       <Footer />
