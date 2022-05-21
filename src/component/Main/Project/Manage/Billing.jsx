@@ -84,7 +84,7 @@ const ViewBillingInvoice = props => {
                         <LabelAndText
                           className="mb-2"
                           label="TERMS "
-                          value={projectQuotation.serial_number}
+                          value=""
                           isReadOnly={true}
                         />
                       </Form.Group>

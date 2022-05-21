@@ -65,7 +65,7 @@ const ViewSaleInvoice = props => {
                         <LabelAndText
                           className="mb-2"
                           label="TIN: "
-                          value={projectQuotation.customer}
+                          value=""
                           isReadOnly={true}
                         />
 
@@ -79,7 +79,7 @@ const ViewSaleInvoice = props => {
                         <LabelAndText
                           className="mb-2"
                           label="Bus. Style: "
-                          value={projectQuotation.address}
+                          value=""
                           isReadOnly={true}
                         />
                       </Form.Group>
@@ -96,22 +96,22 @@ const ViewSaleInvoice = props => {
 
                         <LabelAndText
                           className="mb-2"
-                          label="TERMS "
-                          value={projectQuotation.serial_number}
+                          label="TERMS: "
+                          value=""
                           isReadOnly={true}
                         />
 
                         <LabelAndText
                           className="mb-2"
-                          label="OSCA/PWD ID No. "
-                          value={projectQuotation.serial_number}
+                          label="OSCA/PWD ID No.: "
+                          value=""
                           isReadOnly={true}
                         />
 
                         <LabelAndText
                           className="mb-2"
-                          label="Cardholder's Signature "
-                          value={projectQuotation.serial_number}
+                          label="Cardholder's Signature: "
+                          value=""
                           isReadOnly={true}
                         />
                       </Form.Group>
