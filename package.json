@@ -40,6 +40,7 @@
     "redux": "^4.1.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",
+    "sweetalert2": "^11.4.16",
     "vertical-timeline-component-react": "^3.0.3",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"

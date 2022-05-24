@@ -16,8 +16,10 @@ const RegistrationForm = props => {
     lastName: '',
     birthDay: '',
     email: '',
+    contact_number: '',
     address: '',
     userName: '',
+    user_level_id: 1,
     password: '',
     retypePassword: ''
   });
@@ -105,6 +107,17 @@ const RegistrationForm = props => {
                 onChange={handleChange}
                 placeholder="Enter Address"
               />
+            </Form.Group>
+
+            <Form.Group className="mb-2" controlId="formMobileNumer">
+              <Form.Label className="mb-0">Mobile number:</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="contact_number"
+                    value={values.contact_number}
+                    onChange={handleChange}
+                    placeholder="Enter mobile number"
+                  />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="formBasicBirthDate">

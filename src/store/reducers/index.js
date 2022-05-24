@@ -8,7 +8,10 @@ import project from './project';
 import projectList from './project_list';
 import usersData from './users_data';
 import usersList from './users_list';
+import userLevels from './user_levels';
 import notifList from './notification_list';
+import carousels from './carousel';
+import carouselData from './carousel_data'
 import logManagement from './logManagement';
 
 export default combineReducers({
@@ -21,5 +24,8 @@ export default combineReducers({
   projectList,
   services,
   usersData,
-  usersList
+  usersList,
+  userLevels,
+  carousels,
+  carouselData
 });

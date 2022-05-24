@@ -21,6 +21,7 @@ export const isAuthenticated =
   };
 
 export const registerUser = userData => (dispatch /* , getState */) => {
+  console.log("abot",userData)
   return axiosInstance('post', '/auth/register', userData)
     .then(res => {
       dispatch({
@@ -84,6 +85,20 @@ export const getEmployeeList = () => (dispatch /* getState */) => {
     .then(res => {
       dispatch({
         type: authUserActionType.MERGE_USER_LIST,
+        data: res.data
+      });
+    });
+};
+
+export const getAllUserLevel = () => (dispatch /* getState */) => {
+  dispatch({
+    type: authUserActionType.RESET_USER_LEVELS
+  });
+  return axiosInstance('get', '/auth/user-levels')
+    .then(res => res.data)
+    .then(res => {
+      dispatch({
+        type: authUserActionType.MERGE_USER_LEVELS,
         data: res.data
       });
     });

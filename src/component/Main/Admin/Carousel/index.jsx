@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Form, Table } from 'react-bootstrap';
+import { Button, Modal, Form, Table, Image } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
+import { uploadCarousel, getAllCarousels, updateCarouselStatus, deleteCarousel } from '../../../../store/action';
 
-import { addServices, fetchServices } from '../../../../store/action';
+import Swal from 'sweetalert2'
 
 const Carousel = props => {
-  const { addServices, fetchServices, services } = props;
-
+  const { uploadCarousel, getAllCarousels, updateCarouselStatus, deleteCarousel,carousels } = props;
   const [show, setShow] = useState(false);
   const [values, setValues] = useState({
-    service_type: '',
-    price: 0
+    caption: '',
   });
 
   const [file, setFile] = useState({
-    service_type: '',
-    price: 0
+    filename: '',
   });
 
   const handleChange = e => {
@@ -27,18 +26,130 @@ const Carousel = props => {
   };
 
   useEffect(() => {
-    fetchServices();
+    getAllCarousels();
   }, []);
 
   const handleFileUpload = e => {
     const files = e.target.files[0];
-    setFile(files);
+    
+    setFile({
+      filename: files,
+    });
   };
+
+  const deleteCarouselData = (id,filename) => {
+    Swal.fire({
+      title: 'Are you sure you want to delete this file?',
+      text: `${filename}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const carousel_id = id;
+        deleteCarousel(carousel_id).then(res => {
+          if (res.success) {
+            toast.success(`Your file ${filename} has been deleted.`, {
+              position: toast.POSITION.TOP_CENTER
+            });
+            getAllCarousels();
+          } else {
+            toast.error(res.message, {
+              position: toast.POSITION.TOP_CENTER
+            });
+          }
+        });
+      }
+    })
+   
+  }
+
+  const handleActive = (id, status, filename) => {
+    Swal.fire({
+      title: 'Are you sure you want to activate this file?',
+      text: `${filename}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const carousel_id = id;
+        const is_inactive = status;
+        updateCarouselStatus(carousel_id,is_inactive).then(res => {
+          if (res.success) {
+            toast.success(`Successfully Active Carousel with a filename of ${filename}`, {
+              position: toast.POSITION.TOP_CENTER
+            });
+            getAllCarousels();
+          } else {
+            toast.error(res.message, {
+              position: toast.POSITION.TOP_CENTER
+            });
+          }
+        });
+      }
+    })
+  }
+
+  const handleInActive = (id, status, filename)=> {
+    Swal.fire({
+      title: 'Are you sure you want to deactivate this file?',
+      text: `${filename}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const carousel_id = id;
+        const is_inactive = status;
+        updateCarouselStatus(carousel_id,is_inactive).then(res => {
+          if (res.success) {
+            toast.success(`Successfully Deactive Carousel with a filename of ${filename}`, {
+              position: toast.POSITION.TOP_CENTER
+            });
+            getAllCarousels();
+          } else {
+            toast.error(res.message, {
+              position: toast.POSITION.TOP_CENTER
+            });
+          }
+        });
+      }
+    })
+  }
 
   const handleSubmit = e => {
     e.preventDefault();
-    addServices({ ...values, file }).then(ret => {
-      setShow(false);
+    const formData = new FormData()
+    formData.append('filename', file.filename)
+    formData.append('caption', values.caption)
+    uploadCarousel(formData).then(res => {
+      console.log("hotdog",res)
+      if (res.success) {
+        toast.success('Successfully Add Carousel Photo', {
+          position: toast.POSITION.TOP_CENTER
+        });
+        getAllCarousels();
+        setValues({
+          caption: ''
+        });
+
+        setFile({
+          filename: ''
+        })
+
+        setShow(false);
+      } else {
+        toast.error(res.message, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
     });
   };
 
@@ -49,20 +160,32 @@ const Carousel = props => {
         onHide={() => setShow(false)}
         backdrop="static"
         keyboard={false}>
-        <Form onSubmit={handleSubmit} encType="multipart/form-data">
+        <Form onSubmit={handleSubmit}>
           <Modal.Header closeButton>
             <Modal.Title>Add Photo</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Form.Group controlId="formFileLg" className="mb-3">
+            <Form.Group controlId="formFileLg" className="mb-3">
               <Form.Control
                 type="file"
-                name="file"
-                // value={values.file}
+                name="filename"
+                // value={file.filename}
                 onChange={handleFileUpload}
                 multiple
               />
             </Form.Group>
+
+            <Form.Group className="mb-2" controlId="formBasicCaption">
+              <Form.Label className="mb-0">Caption:</Form.Label>
+              <Form.Control
+                type="text"
+                name="caption"
+                value={values.caption}
+                onChange={handleChange}
+                placeholder="Enter caption for this image"
+              />
+            </Form.Group>
+
             
           </Modal.Body>
           <Modal.Footer>
@@ -81,29 +204,40 @@ const Carousel = props => {
           Add Photo
         </Button>
       </div>
-
-      {/* <Table striped bordered responsive hover>
+      <Table striped bordered responsive>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Service Name</th>
-            <th>Price</th>
-            <th>Added By</th>
+            <th>Caption</th>
+            <th>Image</th>
+            <th>Filename</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {Object.keys(services).length > 0 ? services.map(ret => {
+          {carousels.length > 0 && carousels.map(carousel => {
             return (
-              <tr>
-                <th>{ret.services_id}</th>
-                <td>{ret.services_name}</td>
-                <td>{ret.services_price}</td>
-                <td>{`${ret.last_name}, ${ret.first_name}`}</td>
+              <tr key={carousel.carousel_id}>
+                <td>{carousel.caption}</td>
+                <td>
+                  <Image
+                    src={carousel.file_destination}
+                    thumbnail
+                    style={{ maxWidth: '8rem' }}
+                  />
+                </td>
+                <td>{carousel.file_name}</td>
+                <td>{carousel.is_inactive == 1 ? 'Active' : 'Inactive'}</td>
+                <td>
+                  {carousel.is_inactive == 1 ? <Button variant="warn" onClick={() => handleInActive(carousel.carousel_id,0,carousel.file_name)}>Deactive</Button> : <Button variant="done" onClick={() => handleActive(carousel.carousel_id,1,carousel.file_name)}>Activate</Button>}
+                  <Button variant="cancel" onClick={() => deleteCarouselData(carousel.carousel_id, carousel.file_name)}>Delete</Button>
+                </td>
               </tr>
             )
-          }):""}
+          })}
         </tbody>
-      </Table> */}
+      </Table>
+      
     </>
   );
 };
@@ -111,14 +245,16 @@ const Carousel = props => {
 const mapStateToProps = state => {
   return {
     isLoggedIn: state.app.isAuthenticated,
-    services: state.services
+    carousels: state.carousels
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addServices: props => dispatch(addServices(props)),
-    fetchServices: () => dispatch(fetchServices())
+    uploadCarousel: props => dispatch(uploadCarousel(props)),
+    updateCarouselStatus: (carousel_id, is_inactive) => dispatch(updateCarouselStatus(carousel_id, is_inactive)),
+    deleteCarousel: carousel_id => dispatch(deleteCarousel(carousel_id)),
+    getAllCarousels: () => dispatch(getAllCarousels())
   };
 };
 
