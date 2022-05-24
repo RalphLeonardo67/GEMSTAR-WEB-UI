@@ -66,9 +66,10 @@ const Carousel = props => {
    
   }
 
-  const handleActive = (id, status, filename) => {
+  const handleChangeStatus = (id, status, filename) => {
+    const message = status === 1 ? 'Activate' : 'Deactivate';
     Swal.fire({
-      title: 'Are you sure you want to activate this file?',
+      title: `Are you sure you want to ${message} this file?`,
       text: `${filename}`,
       icon: 'warning',
       showCancelButton: true,
@@ -81,36 +82,7 @@ const Carousel = props => {
         const is_inactive = status;
         updateCarouselStatus(carousel_id,is_inactive).then(res => {
           if (res.success) {
-            toast.success(`Successfully Active Carousel with a filename of ${filename}`, {
-              position: toast.POSITION.TOP_CENTER
-            });
-            getAllCarousels();
-          } else {
-            toast.error(res.message, {
-              position: toast.POSITION.TOP_CENTER
-            });
-          }
-        });
-      }
-    })
-  }
-
-  const handleInActive = (id, status, filename)=> {
-    Swal.fire({
-      title: 'Are you sure you want to deactivate this file?',
-      text: `${filename}`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const carousel_id = id;
-        const is_inactive = status;
-        updateCarouselStatus(carousel_id,is_inactive).then(res => {
-          if (res.success) {
-            toast.success(`Successfully Deactive Carousel with a filename of ${filename}`, {
+            toast.success(`Successfully ${message} Carousel with a filename of ${filename}`, {
               position: toast.POSITION.TOP_CENTER
             });
             getAllCarousels();
@@ -229,7 +201,7 @@ const Carousel = props => {
                 <td>{carousel.file_name}</td>
                 <td>{carousel.is_inactive == 1 ? 'Active' : 'Inactive'}</td>
                 <td>
-                  {carousel.is_inactive == 1 ? <Button variant="warn" onClick={() => handleInActive(carousel.carousel_id,0,carousel.file_name)}>Deactive</Button> : <Button variant="done" onClick={() => handleActive(carousel.carousel_id,1,carousel.file_name)}>Activate</Button>}
+                  {carousel.is_inactive == 1 ? <Button variant="warn" onClick={() => handleChangeStatus(carousel.carousel_id,0,carousel.file_name)}>Deactive</Button> : <Button variant="done" onClick={() => handleChangeStatus(carousel.carousel_id,1,carousel.file_name)}>Activate</Button>}
                   <Button variant="cancel" onClick={() => deleteCarouselData(carousel.carousel_id, carousel.file_name)}>Delete</Button>
                 </td>
               </tr>
